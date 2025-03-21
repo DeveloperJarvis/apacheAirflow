@@ -5,7 +5,7 @@
 
 [documentation](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
 
-check is docker version meets minimum requirements
+check if docker version meets minimum requirements
 ```bash
 sudo docker run --rm "debian:bookworm-slim" bash -c 'numfmt --to iec $(echo $(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE))))'
 ```
