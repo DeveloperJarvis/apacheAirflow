@@ -1,0 +1,46 @@
+version: '3.4'  # or '3.8' for the latest features
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s  # This will now be valid
+    restart: always
+
+  webserver:
+    build: ./dockerfiles
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      - LOAD_EX=nn
+      - EXECUTOR=Local
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    volumes:
+      - ./drags:/usr/local/airflow/drags
+      # - ./plugins:/usr/local/airflow/plugins
+    ports:
+      # - "8080:80"
+      - "8080:8080"
+    command: webserver
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 30s  # This will now be valid
+
+volumes:
+  postgres-db-volume:  # Declare the named volume here
