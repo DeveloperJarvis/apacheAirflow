@@ -22,14 +22,16 @@ services:
     depends_on:
       - postgres
     environment:
-      - LOAD_EX=nn
+      # - LOAD_EX=nn # Set to 'nn' to load example DAGs
+      - LOAD_EX=n # Set to 'n' to not load example DAGs
       - EXECUTOR=Local
     logging:
       options:
         max-size: 10m
         max-file: "3"
     volumes:
-      - ./drags:/usr/local/airflow/drags
+      - ./dags:/usr/local/airflow/dags
+      - ./files:/usr/local/airflow/files
       # - ./plugins:/usr/local/airflow/plugins
     ports:
       # - "8080:80"

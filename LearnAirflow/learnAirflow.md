@@ -21,8 +21,21 @@ to stop execution CTRL + C and run:
     sudo docker-compose stop
     ```
 2. to stop and remove containers, networks, and volumes:
+    1. remove containers only
+        ```bash
+        sudo docker-compose down
+        ```
+    2. also remove volumes
+        ```bash
+        sudo docker-compose down -v
+        ```
+    3. also remove all images
+        ```bash
+        sudo docker-compose down -rmi all
+        ```
+3. remove data:
     ```bash
-    sudo docker-compose down
+    sudo docker system purge
     ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
