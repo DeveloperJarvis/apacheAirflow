@@ -1,5 +1,10 @@
 <a id="readme-top"></a>
 # learn Airflow 
+
+change directory where you have docker compose file:
+```bash
+cd apacheAirflow/LearnAirflow/
+```
 ensure no docker containers running:
 ```bash
 sudo docker container ls

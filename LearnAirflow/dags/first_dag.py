@@ -9,11 +9,29 @@ from airflow.operators.python_operator import PythonOperator  # Updated import f
 
 import pandas as pd
 
-def first_function_execute():
-    try:
-        string = "Hello World!!!.."
-        print(string)
+def first_function_execute(*args, **kwargs):
+    print("First function execute..")
+    variable = kwargs.get("name", "user")
+    string = "Hello World!!!..: {}".format(variable)
+    print(string)
+    return string
 
+
+def second_pre_function_execute(**context):
+    print("Second pre function execute..")
+    context["ti"].xcom_push(
+        key="mykey",
+        value="pre function says hello"
+        )
+
+
+def second_function_execute(**context):
+    instance = context.get("ti").xcom_pull(key="mykey")
+    print("second_function_execute got value: {}".format(instance))
+
+def third_function_execute():
+    try:
+        print("Second function execute..")
         # Define the path to the directory you want to access
         directory_path = './files'
 
@@ -50,5 +68,29 @@ with DAG(
 ) as dag:  # Use 'dag' as the context manager variable name
     first_function_task = PythonOperator(
         task_id="first_function_execute",
-        python_callable=first_function_execute
+        python_callable=first_function_execute,
+        op_kwargs={"name": "Developer Jarvis"}
     )
+
+    second_pre_function_task = PythonOperator(
+        task_id="second_pre_function_execute",
+        python_callable=second_pre_function_execute,
+        provide_context=True, # enable this tag you could exchange 
+                                # data between this functions
+        op_kwargs={"name": "Developer Jarvis"}
+    )
+
+    second_function_task = PythonOperator(
+        task_id="second_function_execute",
+        python_callable=second_function_execute,
+        provide_context=True, # enable this tag you could exchange 
+                                # data between this functions
+        op_kwargs={"name": "Developer Jarvis"}
+    )
+
+    third_function_task = PythonOperator(
+        task_id="third_function_execute",
+        python_callable=third_function_execute
+    )
+
+second_pre_function_task >> second_function_task
