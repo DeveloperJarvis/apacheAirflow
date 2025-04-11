@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve/Reject Workflow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Approve or Reject Task</h2>
+        <form method="POST">
+            <input type="hidden" name="task_id" value="{{ request.args.get('task_id') }}">
+            <input type="hidden" name="dag_id" value="{{ request.args.get('dag_id') }}">
+
+            <button type="submit" name="decision" value="approve" class="btn btn-success">Approve</button>
+            <button type="submit" name="decision" value="reject" class="btn btn-danger">Reject</button>
+        </form>
+    </div>
+</body>
+</html>
