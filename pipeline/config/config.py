@@ -1,5 +1,0 @@
-sql_dbname='airflow'
-sql_user='airflow'
-sql_host='postgres'
-sql_password='airflow'
-directory_path = './files'
